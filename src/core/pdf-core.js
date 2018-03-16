@@ -15,8 +15,8 @@ async function render(_opts = {}) {
       height: 1200,
     },
     goto: {
-      waitUntil: 'networkidle',
-      networkIdleTimeout: 2000,
+      waitUntil: 'networkidle2',
+      timeout: 0,
     },
     pdf: {
       format: 'A4',
@@ -35,7 +35,7 @@ async function render(_opts = {}) {
   const browser = await puppeteer.launch({
     headless: !config.DEBUG_MODE,
     ignoreHTTPSErrors: opts.ignoreHttpsErrors,
-    args: ['--disable-gpu', '--no-sandbox', '--disable-setuid-sandbox'],
+    //args: ['--disable-gpu', '--no-sandbox', '--disable-setuid-sandbox'],
     sloMo: config.DEBUG_MODE ? 250 : undefined,
   });
   const page = await browser.newPage();
@@ -57,7 +57,7 @@ async function render(_opts = {}) {
       await page.emulateMedia('screen');
     }
 
-    logger.info('Setting cookies..');
+    logger.info(`Setting cookies....${opts.cookies}`);
     opts.cookies.map(async (cookie) => {
       await page.setCookie(cookie);
     });
